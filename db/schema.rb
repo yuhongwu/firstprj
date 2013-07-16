@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130516125240) do
+ActiveRecord::Schema.define(:version => 20130709114438) do
 
   create_table "activities", :force => true do |t|
     t.string   "name"
@@ -24,10 +24,12 @@ ActiveRecord::Schema.define(:version => 20130516125240) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.string   "ancestry"
+    t.boolean  "is_available"
   end
 
   add_index "activities", ["ancestry"], :name => "index_activities_on_ancestry"
   add_index "activities", ["gym_id"], :name => "index_activities_on_gym_id"
+  add_index "activities", ["is_available"], :name => "index_activities_on_is_available"
   add_index "activities", ["venue_type_id"], :name => "index_activities_on_venue_type_id"
 
   create_table "areas", :force => true do |t|
@@ -111,6 +113,22 @@ ActiveRecord::Schema.define(:version => 20130516125240) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "ckeditor_assets", :force => true do |t|
+    t.string   "data_file_name",                  :null => false
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.integer  "assetable_id"
+    t.string   "assetable_type",    :limit => 30
+    t.string   "type",              :limit => 30
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], :name => "idx_ckeditor_assetable"
+  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], :name => "idx_ckeditor_assetable_type"
+
   create_table "companies", :force => true do |t|
     t.string   "name"
     t.string   "address"
@@ -118,6 +136,21 @@ ActiveRecord::Schema.define(:version => 20130516125240) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "contacts", :force => true do |t|
+    t.string "title"
+    t.text   "content"
+  end
+
+  create_table "csv_imports", :force => true do |t|
+    t.integer  "gym_id"
+    t.string   "csv"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "import_type"
+  end
+
+  add_index "csv_imports", ["gym_id"], :name => "index_csv_imports_on_gym_id"
 
   create_table "gateway_bills", :force => true do |t|
     t.string   "notification_id"
@@ -311,6 +344,11 @@ ActiveRecord::Schema.define(:version => 20130516125240) do
   add_index "recurrence_rules", ["date_recurrent_id", "date_recurrent_type"], :name => "index_recurrence_rules_on_date_recurrent"
   add_index "recurrence_rules", ["time_recurrent_id", "time_recurrent_type"], :name => "index_recurrence_rules_on_time_recurrent"
 
+  create_table "user_agreements", :force => true do |t|
+    t.string "title"
+    t.text   "content"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "email",                    :default => "", :null => false
     t.string   "encrypted_password",       :default => "", :null => false
@@ -379,9 +417,13 @@ ActiveRecord::Schema.define(:version => 20130516125240) do
     t.decimal  "price",         :precision => 8, :scale => 2
     t.decimal  "member_price",  :precision => 8, :scale => 2
     t.boolean  "active"
+    t.boolean  "is_available"
+    t.boolean  "is_manually"
   end
 
   add_index "venues", ["active"], :name => "index_venues_on_active"
   add_index "venues", ["activity_id"], :name => "index_venues_on_activity_id"
+  add_index "venues", ["is_available"], :name => "index_venues_on_is_available"
+  add_index "venues", ["is_manually"], :name => "index_venues_on_is_manually"
 
 end

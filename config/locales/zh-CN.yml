@@ -284,6 +284,7 @@ zh-CN:
     destroy_confirmation: '确定要删除吗？'
     back: '返回'
     enable: '启用'
+    try_disable: '禁用'
     disable: '禁用'
     confirm: '批准'
     deny: '不批准'
@@ -378,6 +379,9 @@ zh-CN:
       venues:
         publish:
           success: '场地发布至 %{date}'
+        disable:
+          success: '场地禁用成功'
+          failure: '场地禁用失败'
 
   'true': '是'
   'false': '否'
@@ -509,3 +513,6 @@ zh-CN:
   unbookmark_gym: 取消收藏
   default_gym_group_name: 默认
   card_line_items_without_order: 自定义充值
+  unavailable_venue: 已禁用的场地
+  manually_venues: 手动修改的场地
+  new_manually_venue: 手动添加场地
